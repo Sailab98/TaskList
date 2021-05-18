@@ -4,14 +4,15 @@ import DatePicker from "react-datepicker";
 import { connect } from "react-redux";
 import { addTask } from "../store/actions";
 const Form = (props) => {
-  const { addTask } = props;
+  const { addNewTask, show } = props;
   const [taskDetails, setTaskDetails] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState();
   const [user, setUser] = useState("");
 
   const handleSubmit = () => {
-    addTask(taskDetails, date, time, user);
+    addNewTask({ taskDetails, date, time, user });
+    show();
   };
   return (
     <>
@@ -83,7 +84,7 @@ const Form = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addTask: (props) => {
+    addNewTask: (props) => {
       dispatch(addTask(props));
     }
   };

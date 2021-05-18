@@ -3,16 +3,18 @@ const initialState = {
 };
 
 const tasks = (state = initialState, action) => {
-  let newTodos;
   switch (action.type) {
     case "ADD_TASK":
-      newTodos = [...state];
-      newTodos.push(action.payload);
-      return newTodos;
+      // let newTodos;
+      // newTodos = [...state];
+      // newTodos.push(action.payload);
+      // return newTodos;
+      const newFormattedTask = { ...action.payload, id: state.todos.length + 1 };
+      return { ...state, todos: state.todos.concat(newFormattedTask) };
 
-    case "DELETE_TASK":
-      (newTodos = [...state]), (newTodos = newTodos.filter((todo) => todo.id != action.payload));
-      return newTodos;
+    // case "DELETE_TASK":
+    //   (newTodos = [...state]), (newTodos = newTodos.filter((todo) => todo.id != action.payload));
+    //   return newTodos;
 
     default:
       return state;

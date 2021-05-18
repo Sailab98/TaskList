@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Form from "./taskform";
 import TodoList from "./todolist";
 
-const Task = () => {
+const Task = (props) => {
+  // const { todos } = props;
   const [showForm, toggleShowForm] = useState(false);
+  // var //count = todos.length;
   var count = 5;
   const show = () => {
     toggleShowForm((prevState) => !prevState);
@@ -29,8 +31,7 @@ const Task = () => {
                     </span>
                   </div>
                 </div>
-                {showForm ? <Form /> : <></>}
-                <TodoList />
+                {showForm ? <Form show={show} /> : <TodoList />}
               </div>
             </div>
           </div>
@@ -39,4 +40,7 @@ const Task = () => {
     </>
   );
 };
+const mapStateToProps = (state) => ({
+  todos: state.todos
+});
 export default Task;
