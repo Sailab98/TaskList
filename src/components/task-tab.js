@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "./taskform";
 import TodoList from "./todolist";
+import { connect } from "react-redux";
 
 const Task = (props) => {
-  // const { todos } = props;
+  const { todos } = props;
   const [showForm, toggleShowForm] = useState(false);
-  // var //count = todos.length;
-  var count = 5;
+  const [todoCount, setTodoCount] = useState(0);
+  const [selectedTask, setSelectedTask] = useState(null);
+
   const show = () => {
     toggleShowForm((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    setTodoCount(todos.length);
+  }, [todos.length]);
+
+  useEffect(() => {
+    if (!showForm) {
+      setSelectedTask(null);
+    }
+  }, [showForm]);
 
   return (
     <>
@@ -24,14 +36,18 @@ const Task = (props) => {
                 <div className="ui segment">
                   <div>
                     <span>TASKS</span>
-                    <span style={{ marginLeft: "1vh" }}>{count}</span>
+                    <span style={{ marginLeft: "1vh" }}>{todoCount}</span>
 
                     <span style={{ float: "right" }} onClick={show}>
                       <i className="plus icon "></i>
                     </span>
                   </div>
                 </div>
-                {showForm ? <Form show={show} /> : <TodoList />}
+                {showForm ? (
+                  <Form show={show} selectedTask={selectedTask} />
+                ) : (
+                  <TodoList setSelectedTask={setSelectedTask} toggleShowForm={toggleShowForm} />
+                )}
               </div>
             </div>
           </div>
@@ -43,4 +59,4 @@ const Task = (props) => {
 const mapStateToProps = (state) => ({
   todos: state.todos
 });
-export default Task;
+export default connect(mapStateToProps, null)(Task);

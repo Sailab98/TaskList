@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 
 const TodoList = (props) => {
-  const { todos } = props;
+  const { todos, setSelectedTask, toggleShowForm } = props;
   console.log(todos);
+
+  const handleEdit = (todo) => {
+    setSelectedTask(todo);
+    toggleShowForm((prevState) => !prevState);
+  };
   if (todos && todos.length) {
     return (
       <>
@@ -12,7 +17,10 @@ const TodoList = (props) => {
             <span>
               <h3>
                 {todo.taskDetails}
-                <i class="edit icon " style={{ float: "right" }}></i>
+                <span onClick={() => handleEdit(todo)}>
+                  {" "}
+                  <i className="edit icon " style={{ float: "right" }}></i>
+                </span>
               </h3>
             </span>
           ))}

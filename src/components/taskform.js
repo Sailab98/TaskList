@@ -4,7 +4,8 @@ import DatePicker from "react-datepicker";
 import { connect } from "react-redux";
 import { addTask } from "../store/actions";
 const Form = (props) => {
-  const { addNewTask, show } = props;
+  const { addNewTask, show, selectedTask } = props;
+  console.log(selectedTask);
   const [taskDetails, setTaskDetails] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState();
@@ -12,6 +13,9 @@ const Form = (props) => {
 
   const handleSubmit = () => {
     addNewTask({ taskDetails, date, time, user });
+    show();
+  };
+  const handleCancel = () => {
     show();
   };
   return (
@@ -58,13 +62,17 @@ const Form = (props) => {
 
           <div className="fields">
             <div className="eight wide field">
-              <i className="delete"></i>
+              {selectedTask ? (
+                <i className="trash alternate outline icon" style={{ marginTop: "7px" }}></i>
+              ) : (
+                <></>
+              )}
             </div>
 
             <div className="eight wide field">
               <div className="fields">
                 <div className="four wide field ">
-                  <div className="ui button " style={{ background: "none" }}>
+                  <div className="ui button " style={{ background: "none" }} onClick={handleCancel}>
                     Cancel
                   </div>
                 </div>
