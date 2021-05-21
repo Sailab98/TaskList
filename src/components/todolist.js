@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { editTask } from "../store/actions";
 
 const TodoList = (props) => {
   const { todos, setSelectedTask, toggleShowForm } = props;
@@ -33,4 +34,5 @@ const TodoList = (props) => {
 const mapStateToProps = (state) => ({
   todos: state.todos
 });
-export default connect(mapStateToProps, null)(TodoList);
+
+export default connect(mapStateToProps)(TodoList);

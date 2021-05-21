@@ -5,16 +5,20 @@ const initialState = {
 const tasks = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_TASK":
-      // let newTodos;
-      // newTodos = [...state];
-      // newTodos.push(action.payload);
-      // return newTodos;
       const newFormattedTask = { ...action.payload, id: state.todos.length + 1 };
       return { ...state, todos: state.todos.concat(newFormattedTask) };
 
-    // case "DELETE_TASK":
-    //   (newTodos = [...state]), (newTodos = newTodos.filter((todo) => todo.id != action.payload));
-    //   return newTodos;
+    case "EDIT_TASK":
+      debugger;
+      const editedTask = [...state.todos];
+      const index = editedTask.findIndex((task) => task.id === action.id);
+      if (index != -1) {
+        editedTask[index] = { ...action.payload, id: action.id };
+      }
+      return { ...state, todos: editedTask };
+
+    case "DELETE_TASK":
+      return { ...state, todos: state.todos.filter((todo) => todo.id != action.payload.id) };
 
     default:
       return state;

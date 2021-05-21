@@ -1,23 +1,45 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import { Input } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import { connect } from "react-redux";
-import { addTask } from "../store/actions";
+import { addTask, editTask } from "../store/actions";
+import Delete from "./delete";
 const Form = (props) => {
-  const { addNewTask, show, selectedTask } = props;
+  const { addNewTask, updateTask, show, selectedTask } = props;
   console.log(selectedTask);
+
   const [taskDetails, setTaskDetails] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState();
   const [user, setUser] = useState("");
 
   const handleSubmit = () => {
-    addNewTask({ taskDetails, date, time, user });
+    if (selectedTask != null) {
+      updateTask(selectedTask.id, { taskDetails, date, time, user });
+    } else {
+      addNewTask({ taskDetails, date, time, user });
+    }
     show();
   };
   const handleCancel = () => {
     show();
   };
+  const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
+    <div class="ui left icon input" onClick={onClick} ref={ref} style={{ width: "100%" }}>
+      <input type="text" placeholder="Search users..." value={value} />
+      <i class="users icon"></i>
+    </div>
+  ));
+  console.log(taskDetails);
+  useEffect(() => {
+    if (selectedTask != null) {
+      setTaskDetails(() => selectedTask.taskDetails);
+      setDate(() => selectedTask.date);
+      setTime(() => selectedTask.time);
+      setUser(() => selectedTask.user);
+    }
+  }, [selectedTask]);
+
   return (
     <>
       <div className="ui segment margin-no " style={{ background: "#E6FFFE" }}>
@@ -29,6 +51,7 @@ const Form = (props) => {
               iconPosition="right"
               placeholder="Follow Up"
               onChange={(e) => setTaskDetails(e.target.value)}
+              value={taskDetails}
             />
           </div>
           <div className="fields">
@@ -48,6 +71,7 @@ const Form = (props) => {
                 timeIntervals={30}
                 dateFormat="h:mm aa"
                 placeholderText="Time"
+                customInput={<ExampleCustomInput />}
               />
             </div>
           </div>
@@ -57,16 +81,13 @@ const Form = (props) => {
               type="dropdown"
               placeholder="Prem Kumar"
               onChange={(e) => setUser(e.target.value)}
+              value={user}
             />
           </div>
 
           <div className="fields">
             <div className="eight wide field">
-              {selectedTask ? (
-                <i className="trash alternate outline icon" style={{ marginTop: "7px" }}></i>
-              ) : (
-                <></>
-              )}
+              {selectedTask ? <Delete selectedTask={selectedTask} show={show} /> : <></>}
             </div>
 
             <div className="eight wide field">
@@ -94,6 +115,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addNewTask: (props) => {
       dispatch(addTask(props));
+    },
+    updateTask: (id, payload) => {
+      dispatch(editTask(id, payload));
     }
   };
 };

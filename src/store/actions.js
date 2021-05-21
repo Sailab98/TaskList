@@ -3,12 +3,13 @@ export const addTask = (todo) => ({
   payload: todo
 });
 
-export const editTask = (id) => ({
+export const editTask = (id, todo) => ({
   type: "EDIT_TASK",
-  payload: id
+  id: id,
+  payload: todo
 });
 
-export const deleteTask = (id) => ({
+export const deleteTask = (todo) => ({
   type: "DELETE_TASK",
-  payload: id
+  payload: todo
 });
