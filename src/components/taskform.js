@@ -24,10 +24,16 @@ const Form = (props) => {
   const handleCancel = () => {
     show();
   };
-  const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
+  const TimeCustomInput = forwardRef(({ value, onClick }, ref) => (
     <div class="ui left icon input" onClick={onClick} ref={ref} style={{ width: "100%" }}>
-      <input type="text" placeholder="Search users..." value={value} />
-      <i class="users icon"></i>
+      <input type="text" placeholder="Time" value={value} />
+      <i class="clock outline icon"></i>
+    </div>
+  ));
+  const DateCustomInput = forwardRef(({ value, onClick }, ref) => (
+    <div class="ui left icon input" onClick={onClick} ref={ref} style={{ width: "100%" }}>
+      <input type="text" value={value} />
+      <i class="calendar alternate outline icon"></i>
     </div>
   ));
   console.log(taskDetails);
@@ -58,7 +64,11 @@ const Form = (props) => {
             <div className="eight wide field">
               <label>Date</label>
 
-              <DatePicker selected={date} onChange={(date) => setDate(date)} />
+              <DatePicker
+                selected={date}
+                onChange={(date) => setDate(date)}
+                customInput={<DateCustomInput />}
+              />
             </div>
 
             <div className="eight wide field">
@@ -71,7 +81,7 @@ const Form = (props) => {
                 timeIntervals={30}
                 dateFormat="h:mm aa"
                 placeholderText="Time"
-                customInput={<ExampleCustomInput />}
+                customInput={<TimeCustomInput />}
               />
             </div>
           </div>
