@@ -25,7 +25,7 @@ const Task = (props) => {
 
   return (
     <>
-      <div className="ui grid padding-no " style={{ height: "102vh" }}>
+      <div className="ui grid  " style={{ height: "102vh" }}>
         <div className="two wide column margin-no" style={{ background: "#2b3c55" }}></div>
 
         <div className="fourteen wide column ">

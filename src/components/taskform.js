@@ -1,18 +1,60 @@
 import React, { useState, forwardRef, useEffect } from "react";
 import { Input } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
+import Dropdown from "./Dropdown";
 import { connect } from "react-redux";
 import { addTask, editTask } from "../store/actions";
+import axios from "axios";
 import Delete from "./delete";
+import DropdownList from "./Dropdown";
 const Form = (props) => {
   const { addNewTask, updateTask, show, selectedTask } = props;
-  console.log(selectedTask);
 
   const [taskDetails, setTaskDetails] = useState("");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState();
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
+  const [userList, setUserList] = useState([]);
 
+  useEffect(() => {
+    const data = { email: "smithcheryl@yahoo.com", password: "12345678" };
+
+    fetch("https://stage.api.sloovi.com/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        debugger;
+        const { results } = data;
+        const { token } = results;
+        fetch("https://stage.api.sloovi.com/team", {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          }
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            debugger;
+            const { results } = data;
+
+            setUserList(results);
+          });
+        console.log("Users:", userList);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   const handleSubmit = () => {
     if (selectedTask != null) {
       updateTask(selectedTask.id, { taskDetails, date, time, user });
@@ -36,7 +78,7 @@ const Form = (props) => {
       <i class="calendar alternate outline icon"></i>
     </div>
   ));
-  console.log(taskDetails);
+
   useEffect(() => {
     if (selectedTask != null) {
       setTaskDetails(() => selectedTask.taskDetails);
@@ -87,27 +129,26 @@ const Form = (props) => {
           </div>
           <div className="field">
             <label>Assign User</label>
-            <Input
-              type="dropdown"
-              placeholder="Prem Kumar"
-              onChange={(e) => setUser(e.target.value)}
-              value={user}
-            />
+
+            <DropdownList user={user} userList={userList} user={user} setUser={setUser} />
           </div>
 
           <div className="fields">
-            <div className="eight wide field">
+            <div className="four wide field">
               {selectedTask ? <Delete selectedTask={selectedTask} show={show} /> : <></>}
             </div>
 
-            <div className="eight wide field">
+            <div className="twelve wide field">
               <div className="fields">
                 <div className="four wide field ">
-                  <div className="ui button " style={{ background: "none" }} onClick={handleCancel}>
+                  <div
+                    className="ui button "
+                    style={{ background: "none", marginLeft: "9.3vh", padding: "1vh" }}
+                    onClick={handleCancel}>
                     Cancel
                   </div>
                 </div>
-                <div className="four wide field" style={{ marginLeft: "5.3vh" }}>
+                <div className="four wide field" style={{ marginLeft: "13.3vh", padding: "0vh" }}>
                   <div className="ui positive button " onClick={handleSubmit}>
                     Save
                   </div>
