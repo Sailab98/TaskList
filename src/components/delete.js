@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 const Delete = (props) => {
   const { deleteTask, selectedTask, show } = props;
   const handleDelete = () => {
-    debugger;
     let isDelete = window.confirm("Are you sure you want to delete this Task?");
 
     if (isDelete) {

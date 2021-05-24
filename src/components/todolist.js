@@ -31,8 +31,10 @@ const TodoList = (props) => {
   }
   return <></>;
 };
-const mapStateToProps = (state) => ({
-  todos: state.todos
-});
+const mapStateToProps = (state) => {
+  return {
+    todos: state.todos
+  };
+};
 
 export default connect(mapStateToProps)(TodoList);

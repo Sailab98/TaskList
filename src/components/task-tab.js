@@ -14,8 +14,10 @@ const Task = (props) => {
   };
 
   useEffect(() => {
-    setTodoCount(todos.length);
-  }, [todos.length]);
+    if (todos) {
+      setTodoCount(todos.length);
+    }
+  }, [todos]);
 
   useEffect(() => {
     if (!showForm) {

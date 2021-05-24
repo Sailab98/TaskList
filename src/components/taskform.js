@@ -12,7 +12,7 @@ const Form = (props) => {
 
   const [taskDetails, setTaskDetails] = useState("");
   const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState();
+  const [time, setTime] = useState(new Date());
   const [user, setUser] = useState({});
   const [userList, setUserList] = useState([]);
 
@@ -29,7 +29,6 @@ const Form = (props) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        debugger;
         const { results } = data;
         const { token } = results;
         fetch("https://stage.api.sloovi.com/team", {
@@ -44,7 +43,6 @@ const Form = (props) => {
             return res.json();
           })
           .then((data) => {
-            debugger;
             const { results } = data;
 
             setUserList(results);
@@ -65,6 +63,11 @@ const Form = (props) => {
   };
   const handleCancel = () => {
     show();
+  };
+
+  const handleDateChange = (date) => {
+    debugger;
+    setDate(date.toISOString());
   };
   const TimeCustomInput = forwardRef(({ value, onClick }, ref) => (
     <div class="ui left icon input" onClick={onClick} ref={ref} style={{ width: "100%" }}>
@@ -107,8 +110,8 @@ const Form = (props) => {
               <label>Date</label>
 
               <DatePicker
-                selected={date}
-                onChange={(date) => setDate(date)}
+                selected={new Date(date)}
+                onChange={handleDateChange}
                 customInput={<DateCustomInput />}
               />
             </div>
@@ -116,8 +119,8 @@ const Form = (props) => {
             <div className="eight wide field">
               <label>Time</label>
               <DatePicker
-                selected={time}
-                onChange={(date) => setTime(date)}
+                selected={new Date(time)}
+                onChange={(date) => setTime(date.toISOString())}
                 showTimeSelect
                 showTimeSelectOnly
                 timeIntervals={30}

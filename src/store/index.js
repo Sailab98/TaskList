@@ -5,4 +5,16 @@ let composeEnhancers = compose;
 
 composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export const store = createStore(addTask, composeEnhancers());
+function configureStore(initialState) {
+  let sessionDetails = localStorage.getItem("task-handler")
+    ? JSON.parse(localStorage.getItem("task-handler"))
+    : null;
+  if (sessionDetails) {
+    debugger;
+    initialState = sessionDetails;
+  }
+  const store = createStore(addTask, initialState, composeEnhancers());
+  return store;
+}
+
+export default configureStore();
